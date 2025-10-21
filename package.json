@@ -1,0 +1,13 @@
+{
+  "name": "katalon-playwright-ts-integration",
+  "version": "1.0.0",
+  "scripts": {
+    "test": "playwright test",
+    "upload": "java -jar report-uploader.jar --apiKey=$TESTOPS_API_KEY --projectId=$TESTOPS_PROJECT_ID --reportPath=results.xml --reportType=junit",
+    "test:report": "npm run test && npm run upload"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "typescript": "^5.6.0"
+  }
+}

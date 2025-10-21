@@ -1,0 +1,33 @@
+name: Playwright + Katalon TestOps
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Playwright tests (Chrome only)
+        run: npx playwright test --project="Desktop Chrome"
+
+      - name: Upload report to Katalon TestOps
+        run: |
+          java -jar report-uploader.jar \
+            --apiKey=${{ secrets.TESTOPS_API_KEY }} \
+            --projectId=${{ secrets.TESTOPS_PROJECT_ID }} \
+            --reportPath=results.xml \
+            --reportType=junit
